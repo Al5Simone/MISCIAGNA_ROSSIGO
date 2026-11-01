@@ -16,6 +16,26 @@ public class Utente {
         this.credito = credito;
     }
 
+    public void setCodiceFiscale(String codiceFiscale) {
+        this.codiceFiscale = codiceFiscale;
+    }
+
+    public void setCredito(double credito) {
+        this.credito = credito;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
     public String getCodiceFiscale() {
         return codiceFiscale;
     }
