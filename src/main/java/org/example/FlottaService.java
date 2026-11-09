@@ -3,29 +3,41 @@ package org.example;
 import it.kamaladafrica.codicefiscale.CodiceFiscale;
 
 import java.util.List;
+import java.util.Objects;
 
 public class FlottaService {
 
-    private static List<Utente> utente;
-    private static List<Noleggio> noleggio;
-    private static List<Veicolo> veicolo;
+    private final List<Utente> utenti;
+    private final List<Noleggio> noleggi;
+    private final List<Veicolo> veicoli;
 
-    public FlottaService(List<Utente> utente, List<Noleggio> noleggio, List<Veicolo> veicolo) {
-        FlottaService.utente = utente;
-        FlottaService.noleggio = noleggio;
-        FlottaService.veicolo = veicolo;
+    public FlottaService(List<Utente> utenti, List<Noleggio> noleggi, List<Veicolo> veicoli) {
+        this.utenti = Objects.requireNonNull(utenti, "La lista utenti è obbligatoria");
+        this.noleggi = Objects.requireNonNull(noleggi, "La lista noleggi è obbligatoria");
+        this.veicoli = Objects.requireNonNull(veicoli, "La lista veicoli è obbligatoria");
     }
 
-    public static void registraVeicolo(Veicolo v) {
-        veicolo.add(v);
+    public void registraVeicolo(Veicolo veicolo) {
+        this.veicoli.add(Objects.requireNonNull(veicolo, "Il veicolo è obbligatorio"));
     }
 
-    public static void registraUtente(Utente u) {
-        CodiceFiscale.isFormatValid(u.getCodiceFiscale());
-        utente.add(u);
+    public void registraUtente(Utente utente) throws CodiceFiscaleNonValidoException {
+        Objects.requireNonNull(utente, "L'utente è obbligatorio");
+        String codiceFiscale = utente.getCodiceFiscale();
+        if (codiceFiscale == null || !CodiceFiscale.isFormatValid(codiceFiscale)) {
+            throw new CodiceFiscaleNonValidoException("Codice fiscale non valido per " + utente.getNome());
+        }
+        this.utenti.add(utente);
     }
 
-    public static void SbloccaVeicolo(Veicolo v) {
-        veicolo.remove(v);
+    public void SbloccaVeicolo(Veicolo veicolo)
+            throws VeicoloNonDisponibileException, BatteriaScaricaException {
+        if (veicolo == null || !veicoli.contains(veicolo) || !veicolo.isDisponibile()) {
+            throw new VeicoloNonDisponibileException("Veicolo non registrato o non disponibile");
+        }
+        if (veicolo.getLivelloBatteria() < 15) {
+            throw new BatteriaScaricaException("Impossibile sbloccare il veicolo " + veicolo.getCodice());
+        }
+        veicolo.setDisponibile(false);
     }
 }

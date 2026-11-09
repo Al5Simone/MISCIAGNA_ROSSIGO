@@ -2,27 +2,31 @@ package org.example;
 
 public class MonopattinoElettrico extends Veicolo{
 
-    private double velocitaMassima;
+    private final double velocitaMassima;
 
     public MonopattinoElettrico(int codice, double livelloBatteria, boolean stato, double velocitaMassima) {
         super(codice, livelloBatteria, stato);
+        if (Double.isNaN(velocitaMassima) || velocitaMassima <= 0) {
+            throw new IllegalArgumentException("La velocità massima deve essere positiva");
+        }
         this.velocitaMassima = velocitaMassima;
     }
 
-
     @Override
-    double CalcolaCosto(int minuti) {
+    public double CalcolaCosto(int minuti) {
+        verificaDurata(minuti);
         return minuti * 0.25;
     }
 
     @Override
-    double ConsumoBatteria() {
+    public double ConsumoBatteria() {
         return 1;
     }
 
     @Override
-    public  String toString(){
-
-        return "MonopattinoElettrico{" + "VelocitàMassima: " + velocitaMassima + " e consuma: " + ConsumoBatteria() + super.toString() + "}";
+    public String toString() {
+        return "MonopattinoElettrico{" + "velocitaMassima=" + velocitaMassima
+                + " km/h, consumoBatteria=" + ConsumoBatteria()
+                + "%/min, " + super.toString() + "}";
     }
 }
