@@ -29,7 +29,6 @@ public class Bici extends Veicolo {
 
     @Override
     public String toString() {
-        return "Bici{" + "marce=" + marce + ", consumoBatteria=" + ConsumoBatteria()
-                + "%/min, " + super.toString() + "}";
+        return "Bici{marce=" + marce + ", consumo=" + ConsumoBatteria() + "%" + super.toString() + "}";
     }
 }

@@ -6,7 +6,7 @@ public class MonopattinoElettrico extends Veicolo{
 
     public MonopattinoElettrico(int codice, double livelloBatteria, boolean stato, double velocitaMassima) {
         super(codice, livelloBatteria, stato);
-        if (Double.isNaN(velocitaMassima) || velocitaMassima <= 0) {
+        if (!Double.isFinite(velocitaMassima) || velocitaMassima <= 0) {
             throw new IllegalArgumentException("La velocità massima deve essere positiva");
         }
         this.velocitaMassima = velocitaMassima;

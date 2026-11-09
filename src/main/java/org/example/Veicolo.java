@@ -4,15 +4,13 @@ public abstract class Veicolo {
 
     private final int codice;
     protected double livelloBatteria;
-    protected boolean stato;
+    protected boolean stato; // true = disponibile, false = in uso
 
     public Veicolo(int codice, double livelloBatteria, boolean stato) {
         if (codice <= 0) {
             throw new IllegalArgumentException("Il codice del veicolo deve essere positivo");
         }
-        if (Double.isNaN(livelloBatteria) || livelloBatteria < 0 || livelloBatteria > 100) {
-            throw new IllegalArgumentException("Il livello della batteria deve essere tra 0 e 100");
-        }
+        verificaLivelloBatteria(livelloBatteria);
         this.codice = codice;
         this.livelloBatteria = livelloBatteria;
         this.stato = stato;
@@ -30,13 +28,24 @@ public abstract class Veicolo {
         return stato;
     }
 
-    public void setDisponibile(boolean disponibile) {
-        stato = disponibile;
+    public void setStato(boolean stato) {
+        this.stato = stato;
+    }
+
+    public void setLivelloBatteria(double livelloBatteria) {
+        verificaLivelloBatteria(livelloBatteria);
+        this.livelloBatteria = livelloBatteria;
     }
 
     protected void verificaDurata(int minuti) {
         if (minuti <= 0) {
             throw new IllegalArgumentException("La durata deve essere maggiore di zero");
+        }
+    }
+
+    private static void verificaLivelloBatteria(double livelloBatteria) {
+        if (!Double.isFinite(livelloBatteria) || livelloBatteria < 0 || livelloBatteria > 100) {
+            throw new IllegalArgumentException("Il livello della batteria deve essere tra 0 e 100");
         }
     }
 
@@ -47,9 +56,6 @@ public abstract class Veicolo {
 
     @Override
     public String toString() {
-        return "codice=" + codice
-                + ", livelloBatteria=" + livelloBatteria
-                + "%, disponibile=" + stato;
+        return " | codice=" + codice + ", batteria=" + livelloBatteria + "%, disponibile=" + stato;
     }
-
 }
