@@ -54,7 +54,6 @@ public class Main {
         } catch (SQLException e) {
             System.err.println("Errore durante il salvataggio nel database: " + e.getMessage());
         }
-
         if (utente == null) {
             return;
         }
